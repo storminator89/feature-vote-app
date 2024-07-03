@@ -55,12 +55,28 @@ db.serialize(() => {
     user_id INTEGER,
     text TEXT,
     username TEXT,
+    likes INTEGER DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (idea_id) REFERENCES ideas (id),
     FOREIGN KEY (user_id) REFERENCES users (id)
   )`, (err) => {
     if (err) console.error('Error creating comments table:', err.message);
     else console.log('Comments table created or already exists.');
+  });
+
+  db.run(`CREATE TABLE IF NOT EXISTS comment_replies (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    comment_id INTEGER,
+    user_id INTEGER,
+    text TEXT,
+    username TEXT,
+    likes INTEGER DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (comment_id) REFERENCES comments (id),
+    FOREIGN KEY (user_id) REFERENCES users (id)
+  )`, (err) => {
+    if (err) console.error('Error creating comment_replies table:', err.message);
+    else console.log('Comment_replies table created or already exists.');
   });
 });
 
@@ -135,11 +151,27 @@ app.get('/api/ideas', (req, res) => {
 
     Promise.all(fetchComments)
       .then(() => {
-        console.log('Ideas fetched successfully');
+        // Fetch replies for each comment
+        const fetchReplies = rows.flatMap(idea => 
+          idea.comments.map(comment => 
+            new Promise((resolve, reject) => {
+              db.all(`SELECT * FROM comment_replies WHERE comment_id = ?`, [comment.id], (err, replies) => {
+                if (err) reject(err);
+                comment.replies = replies;
+                resolve();
+              });
+            })
+          )
+        );
+
+        return Promise.all(fetchReplies);
+      })
+      .then(() => {
+        console.log('Ideas, comments, and replies fetched successfully');
         res.json(rows);
       })
       .catch(error => {
-        console.error('Error fetching comments:', error.message);
+        console.error('Error fetching comments or replies:', error.message);
         res.status(400).json({ error: error.message });
       });
   });
@@ -247,24 +279,11 @@ app.post('/api/ideas/:ideaId/comments', (req, res) => {
       user_id: userId, 
       text, 
       username, 
+      likes: 0,
       created_at: new Date().toISOString() 
     };
     console.log('Comment added successfully:', newComment);
     res.json(newComment);
-  });
-});
-
-// Kommentare für eine Idee abrufen
-app.get('/api/ideas/:ideaId/comments', (req, res) => {
-  const { ideaId } = req.params;
-  console.log('Fetching comments for idea:', ideaId);
-  db.all(`SELECT * FROM comments WHERE idea_id = ?`, [ideaId], (err, rows) => {
-    if (err) {
-      console.error('Error fetching comments:', err.message);
-      return res.status(400).json({ error: err.message });
-    }
-    console.log('Comments fetched successfully:', rows);
-    res.json(rows);
   });
 });
 
@@ -283,6 +302,69 @@ app.delete('/api/ideas/:ideaId/comments/:commentId', (req, res) => {
     }
     console.log('Comment deleted successfully');
     res.json({ message: 'Comment deleted' });
+  });
+});
+
+// Kommentar liken
+app.post('/api/ideas/:ideaId/comments/:commentId/like', (req, res) => {
+  const { ideaId, commentId } = req.params;
+  const { userId } = req.body;
+
+  console.log('Liking comment:', { ideaId, commentId, userId });
+
+  // Hier würden Sie normalerweise prüfen, ob der Benutzer den Kommentar bereits geliked hat
+
+  db.run(`UPDATE comments SET likes = likes + 1 WHERE id = ? AND idea_id = ?`, [commentId, ideaId], function(err) {
+    if (err) {
+      console.error('Error liking comment:', err.message);
+      return res.status(400).json({ error: err.message });
+    }
+    
+    // Check if any row was affected
+    if (this.changes === 0) {
+      console.error('No comment found with the given id and idea_id');
+      return res.status(404).json({ error: 'Comment not found' });
+    }
+
+    db.get(`SELECT likes FROM comments WHERE id = ?`, [commentId], (err, row) => {
+      if (err) {
+        console.error('Error fetching updated likes:', err.message);
+        return res.status(400).json({ error: err.message });
+      }
+      
+      if (!row) {
+        console.error('Comment not found after update');
+        return res.status(404).json({ error: 'Comment not found after update' });
+      }
+
+      console.log('Comment liked successfully:', { commentId, likes: row.likes });
+      res.json({ likes: row.likes });
+    });
+  });
+});
+
+// Antwort auf Kommentar hinzufügen
+app.post('/api/ideas/:ideaId/comments/:commentId/replies', (req, res) => {
+  const { ideaId, commentId } = req.params;
+  const { text, userId, username } = req.body;
+  console.log('Adding reply to comment:', { ideaId, commentId, userId, username, text });
+  db.run(`INSERT INTO comment_replies (comment_id, user_id, text, username) VALUES (?, ?, ?, ?)`, 
+    [commentId, userId, text, username], function(err) {
+    if (err) {
+      console.error('Error adding reply:', err.message);
+      return res.status(400).json({ error: err.message });
+    }
+    const newReply = { 
+      id: this.lastID, 
+      comment_id: commentId,
+      user_id: userId, 
+      text, 
+      username, 
+      likes: 0,
+      created_at: new Date().toISOString() 
+    };
+    console.log('Reply added successfully:', newReply);
+    res.json(newReply);
   });
 });
 

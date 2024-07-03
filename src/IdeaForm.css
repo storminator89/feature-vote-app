@@ -1,0 +1,177 @@
+/* IdeaForm.css */
+  
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+    width: 100%;
+    position: relative;
+  }
+  
+  .input-container label {
+    position: absolute;
+    top: -20px;
+    left: 0;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 8px;
+    display: block;
+  }
+  
+  .input-container input,
+  .input-container textarea,
+  .input-container select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+  
+  .input-container textarea {
+    min-height: 150px;
+    resize: vertical;
+  }
+  
+  .input-container label svg {
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  
+  .submit-button {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    font-size: 16px;
+  }
+  
+  .submit-button:hover {
+    background-color: #3a7bc8;
+    transform: translateY(-2px);
+  }
+  
+  .description-container {
+    position: relative;
+  }
+  
+  .preview-toggle {
+    position: absolute;
+    right: 1px;
+    top: 40px;
+    background: none;
+    border: none;
+    color: #4a90e2;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+  }
+  
+  .preview-toggle svg {
+    margin-right: 5px;
+  }
+  
+  .markdown-preview {
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    background-color: #f9f9f9;
+  }
+  
+  .markdown-preview h4 {
+    margin-top: 0;
+    color: #333;
+  }
+  
+  /* Markdown Styles */
+  .markdown-preview h1,
+  .markdown-preview h2,
+  .markdown-preview h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .markdown-preview p {
+    margin-bottom: 10px;
+  }
+  
+  .markdown-preview ul,
+  .markdown-preview ol {
+    padding-left: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .markdown-preview li {
+    margin-bottom: 5px;
+  }
+  
+  .markdown-preview code {
+    background-color: #f4f4f4;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: monospace;
+  }
+  
+  .markdown-preview pre {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 4px;
+    overflow-x: auto;
+  }
+  
+  .markdown-preview blockquote {
+    border-left: 4px solid #ddd;
+    padding-left: 10px;
+    color: #666;
+    font-style: italic;
+  }
+
+  .markdown-toolbar {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 5px;
+  }
+  
+  .markdown-toolbar button {
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #4a90e2;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .markdown-toolbar button:hover {
+    background-color: #4a90e2;
+    color: white;
+  }
+  
+  .description-container {
+    position: relative;
+  }
+  
+  .description-container textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    resize: vertical;
+  }
+  
+  @media (max-width: 768px) {
+    .idea-form {
+      padding: 15px;
+    }
+  }

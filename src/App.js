@@ -180,10 +180,74 @@ function App() {
     }
   };
 
+  const handleLikeComment = async (ideaId, commentId) => {
+    try {
+      const response = await axios.post(`http://localhost:5000/api/ideas/${ideaId}/comments/${commentId}/like`, {
+        userId: user.id
+      });
+      
+      setIdeas(prevIdeas => prevIdeas.map(idea => {
+        if (idea.id === ideaId) {
+          return {
+            ...idea,
+            comments: updateCommentLikes(idea.comments, commentId, response.data.likes)
+          };
+        }
+        return idea;
+      }));
+    } catch (error) {
+      console.error('Error liking comment:', error);
+      setErrorMessage('Failed to like comment. Please try again.');
+    }
+  };
+  
+  const updateCommentLikes = (comments, commentId, newLikes) => {
+    return comments.map(comment => {
+      if (comment.id === commentId) {
+        return { ...comment, likes: newLikes };
+      }
+      if (comment.replies) {
+        return {
+          ...comment,
+          replies: updateCommentLikes(comment.replies, commentId, newLikes)
+        };
+      }
+      return comment;
+    });
+  };
+
+  const handleReplyToComment = async (ideaId, commentId, replyText) => {
+    try {
+      const response = await axios.post(`http://localhost:5000/api/ideas/${ideaId}/comments/${commentId}/replies`, {
+        text: replyText,
+        userId: user.id,
+        username: user.username
+      });
+      const newReply = response.data;
+      setIdeas(prevIdeas => prevIdeas.map(idea => {
+        if (idea.id === ideaId) {
+          return {
+            ...idea,
+            comments: idea.comments.map(comment => 
+              comment.id === commentId 
+                ? { ...comment, replies: [...(comment.replies || []), newReply] }
+                : comment
+            )
+          };
+        }
+        return idea;
+      }));
+    } catch (error) {
+      console.error('Error replying to comment:', error);
+      setErrorMessage('Failed to reply to comment. Please try again.');
+    }
+  };
+
   const filteredIdeas = useMemo(() => {
-    return selectedCategory
+    const filtered = selectedCategory
       ? ideas.filter(idea => idea.category === selectedCategory)
       : ideas;
+    return filtered.sort((a, b) => b.votes - a.votes);
   }, [ideas, selectedCategory]);
 
   if (!user) {
@@ -200,7 +264,7 @@ function App() {
         <IdeaForm onSubmit={addIdea} categories={CATEGORIES} />
       </div>
       <div className="filter-bar-container">
-        <FilterBar
+        <FilterBar 
           categories={CATEGORIES}
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
@@ -209,11 +273,13 @@ function App() {
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       <div className="ideas-feed">
         {filteredIdeas.map(idea => (
-          <IdeaItem
-            key={idea.id}
-            idea={idea}
+          <IdeaItem 
+            key={idea.id} 
+            idea={idea} 
             onVote={handleVote}
             onAddComment={handleAddComment}
+            onLikeComment={handleLikeComment}
+            onReplyToComment={handleReplyToComment}
             userVotes={userVotes}
             currentUser={user}
           />
@@ -223,8 +289,8 @@ function App() {
   );
 
   const renderAdminPage = () => (
-    <AdminPage
-      onDeleteIdea={deleteIdea}
+    <AdminPage 
+      onDeleteIdea={deleteIdea} 
       onDeleteComment={handleDeleteComment}
       ideas={ideas}
     />
@@ -233,7 +299,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1 onClick={() => setCurrentPage('home')} style={{ cursor: 'pointer' }}>Feature Ideas</h1>
+        <h1 onClick={() => setCurrentPage('home')}>Feature Ideas</h1>
         <div className="nav-buttons">
           <button onClick={() => setCurrentPage('admin')}>Admin</button>
           <button onClick={handleLogout} className="logout-button">Logout</button>

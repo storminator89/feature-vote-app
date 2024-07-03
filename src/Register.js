@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 import './Register.css';
 import { FaUser, FaLock, FaEnvelope, FaUserPlus } from 'react-icons/fa';
 
-function Register({ onRegister, onLoginClick }) {
+function Register({ onLoginClick }) {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +23,11 @@ function Register({ onRegister, onLoginClick }) {
       });
       const data = await response.json();
       if (response.ok) {
-        onRegister(data.user);
+        setShowSuccessPopup(true);
+        setTimeout(() => {
+          setShowSuccessPopup(false);
+          onLoginClick(); // Redirect to login page
+        }, 3000); // Show success message for 3 seconds
       } else {
         setError(data.message);
       }
@@ -82,6 +87,11 @@ function Register({ onRegister, onLoginClick }) {
           <button onClick={onLoginClick}>Login</button>
         </div>
       </div>
+      {showSuccessPopup && (
+        <div className="success-popup">
+          Registration successful! Redirecting to login...
+        </div>
+      )}
     </div>
   );
 }
