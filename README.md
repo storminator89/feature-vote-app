@@ -1,70 +1,65 @@
-# Getting Started with Create React App
+# Feature Vote Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
+Feature Ideas Platform is a web application that allows users to submit, vote on, and discuss feature ideas for products or services. It provides a collaborative space for users to share their innovative thoughts and engage in meaningful discussions about potential improvements.
 
-## Available Scripts
+## Features
+- User authentication (register, login, logout)
+- Submit new feature ideas
+- Vote on existing ideas
+- Comment on ideas
+- Categorize ideas
+- Admin panel for idea management
+- Responsive design for mobile and desktop
 
-In the project directory, you can run:
+### Main Page
+![Main Page](main.png)
 
-### `npm start`
+### Feature Idea Cards
+![Feature Idea Cards](cards.png)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Technologies Used
+- Frontend: React.js
+- Backend: Node.js with Express.js
+- Database: SQLite
+- State Management: React Hooks
+- Styling: CSS3 with Flexbox and Grid
+- Icons: React Icons
+- Rich Text Editor: React Quill
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Installation
 
-### `npm test`
+1. Clone the repository
+git clone https://github.com/yourusername/feature-ideas-platform.git
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. Navigate to the project directory
+cd feature-ideas-platform
 
-### `npm run build`
+3. Install dependencies for both frontend and backend
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+npm install
+cd client && npm install
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Create a `.env` file in the root directory and add your environment variables
+PORT=5000
+NODE_ENV=development
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+5. Start the development server
+npm run dev
 
-### `npm run eject`
+## Usage
+After starting the development server, open your browser and navigate to `http://localhost:3000`. You can register a new account or log in with an existing one to start submitting and voting on ideas.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Contributing
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Acknowledgments
+- React.js documentation
+- Node.js and Express.js documentation
+- SQLite documentation
+- React Quill for the rich text editor
+- React Icons for the icon set
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Project Link: [https://github.com/storminator89/feature-vote-app](https://github.com/storminator89/feature-vote-app)
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
