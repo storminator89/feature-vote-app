@@ -1,0 +1,108 @@
+/* src/Register.css */
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f2f5;
+  }
+  
+  .register-card {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 350px;
+  }
+  
+  .register-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .register-icon {
+    font-size: 2rem;
+    color: #1877f2;
+    margin-bottom: 0.5rem;
+  }
+  
+  .register-header h2 {
+    color: #1877f2;
+    margin: 0;
+  }
+  
+  .register-form {
+    margin-bottom: 1rem;
+  }
+  
+  .input-group {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  
+  .input-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #606770;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+    border: 1px solid #dddfe2;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  .input-group input:focus {
+    outline: none;
+    border-color: #1877f2;
+    box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
+  }
+  
+  .register-button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #1877f2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .register-button:hover {
+    background-color: #166fe5;
+  }
+  
+  .error-message {
+    color: #ff3b30;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .login-link {
+    text-align: center;
+    margin-top: 1rem;
+    color: #606770;
+  }
+  
+  .login-link button {
+    background: none;
+    border: none;
+    color: #1877f2;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+    font-size: inherit;
+  }
+  
+  .login-link button:hover {
+    text-decoration: underline;
+  }
+  
