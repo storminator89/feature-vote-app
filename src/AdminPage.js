@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AdminPage.css';
+import { BASE_URL } from './config';
 
 function AdminPage({ onDeleteIdea, onDeleteComment }) {
   const [ideas, setIdeas] = useState([]);
@@ -13,7 +14,7 @@ function AdminPage({ onDeleteIdea, onDeleteComment }) {
 
   const fetchIdeas = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/ideas');
+      const response = await axios.get(`${BASE_URL}/ideas`);
       setIdeas(response.data);
     } catch (error) {
       console.error('Error fetching ideas:', error);

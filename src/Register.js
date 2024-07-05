@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import './Register.css';
 import { FaUser, FaLock, FaEnvelope, FaUserPlus } from 'react-icons/fa';
+import { BASE_URL } from './config';
 
 function Register({ onLoginClick }) {
   const [username, setUsername] = useState('');
@@ -14,7 +15,7 @@ function Register({ onLoginClick }) {
     e.preventDefault();
     setError('');
     try {
-      const response = await fetch('http://localhost:5000/api/register', {
+      const response = await fetch(`${BASE_URL}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

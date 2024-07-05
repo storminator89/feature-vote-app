@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import './Login.css';
 import { FaUser, FaLock, FaSignInAlt } from 'react-icons/fa';
+import { BASE_URL } from './config';
 
 function Login({ onLogin, onRegisterClick }) {
   const [username, setUsername] = useState('');
@@ -12,7 +13,7 @@ function Login({ onLogin, onRegisterClick }) {
     e.preventDefault();
     setError('');
     try {
-      const response = await fetch('http://localhost:5000/api/login', {
+      const response = await fetch(`${BASE_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

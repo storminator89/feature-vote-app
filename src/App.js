@@ -8,6 +8,7 @@ import Login from './Login';
 import Register from './Register';
 import AdminPage from './AdminPage';
 import axios from 'axios';
+import { BASE_URL } from './config'; // Importieren Sie die BASE_URL aus der config.js
 
 const CATEGORIES = ['UI', 'Performance', 'Feature', 'Bug Fix'];
 
@@ -22,7 +23,7 @@ function App() {
 
   const fetchIdeas = useCallback(async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/ideas');
+      const response = await axios.get(`${BASE_URL}/ideas`);
       console.log('Fetched ideas:', response.data);
       setIdeas(response.data);
     } catch (error) {
@@ -33,7 +34,7 @@ function App() {
 
   const fetchUserVotes = useCallback(async (userId) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/users/${userId}/votes`);
+      const response = await axios.get(`${BASE_URL}/users/${userId}/votes`);
       console.log('Fetched user votes:', response.data);
       setUserVotes(response.data);
     } catch (error) {
@@ -74,7 +75,7 @@ function App() {
   const addIdea = async (newIdea) => {
     try {
       console.log('Adding new idea:', newIdea);
-      const response = await axios.post('http://localhost:5000/api/ideas', newIdea);
+      const response = await axios.post(`${BASE_URL}/ideas`, newIdea);
       const savedIdea = response.data;
       console.log('Saved idea:', savedIdea);
       setIdeas(prevIdeas => [...prevIdeas, { ...savedIdea, comments: [] }]);
@@ -87,7 +88,7 @@ function App() {
   const deleteIdea = async (id) => {
     try {
       console.log('Deleting idea:', id);
-      await axios.delete(`http://localhost:5000/api/ideas/${id}`);
+      await axios.delete(`${BASE_URL}/ideas/${id}`);
       setIdeas(prevIdeas => prevIdeas.filter(idea => idea.id !== id));
     } catch (error) {
       console.error('Error deleting idea:', error);
@@ -108,7 +109,7 @@ function App() {
 
     try {
       console.log('Voting for idea:', { id, direction, userId: user.id });
-      const response = await axios.post(`http://localhost:5000/api/ideas/${id}/vote`, {
+      const response = await axios.post(`${BASE_URL}/ideas/${id}/vote`, {
         direction,
         userId: user.id
       });
@@ -139,7 +140,7 @@ function App() {
   const handleAddComment = async (ideaId, commentData) => {
     try {
       console.log('Adding comment:', { ideaId, commentData, user });
-      const response = await axios.post(`http://localhost:5000/api/ideas/${ideaId}/comments`, {
+      const response = await axios.post(`${BASE_URL}/ideas/${ideaId}/comments`, {
         text: commentData.text,
         userId: user.id,
         username: user.username
@@ -164,7 +165,7 @@ function App() {
   const handleDeleteComment = async (ideaId, commentId) => {
     try {
       console.log('Deleting comment:', { ideaId, commentId });
-      await axios.delete(`http://localhost:5000/api/ideas/${ideaId}/comments/${commentId}`);
+      await axios.delete(`${BASE_URL}/ideas/${ideaId}/comments/${commentId}`);
       setIdeas(prevIdeas => prevIdeas.map(idea => {
         if (idea.id === ideaId) {
           return {
@@ -182,7 +183,7 @@ function App() {
 
   const handleLikeComment = async (ideaId, commentId) => {
     try {
-      const response = await axios.post(`http://localhost:5000/api/ideas/${ideaId}/comments/${commentId}/like`, {
+      const response = await axios.post(`${BASE_URL}/ideas/${ideaId}/comments/${commentId}/like`, {
         userId: user.id
       });
       
@@ -218,7 +219,7 @@ function App() {
 
   const handleReplyToComment = async (ideaId, commentId, replyText) => {
     try {
-      const response = await axios.post(`http://localhost:5000/api/ideas/${ideaId}/comments/${commentId}/replies`, {
+      const response = await axios.post(`${BASE_URL}/ideas/${ideaId}/comments/${commentId}/replies`, {
         text: replyText,
         userId: user.id,
         username: user.username
@@ -243,7 +244,7 @@ function App() {
     }
   };
 
-  const filteredIdeas = useMemo(() => {
+ const filteredIdeas = useMemo(() => {
     const filtered = selectedCategory
       ? ideas.filter(idea => idea.category === selectedCategory)
       : ideas;
